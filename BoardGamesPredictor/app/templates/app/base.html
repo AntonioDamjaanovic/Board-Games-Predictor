@@ -1,28 +1,33 @@
 <!doctype html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Board Games Predictor</title>
+    <title>{% block title %}Board Games Predictor{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link href="{% static 'app/styles.css' %}" rel="stylesheet">
 </head>
 <body class="d-flex flex-column min-vh-100">
-
-<header class="py-4 bg-primary text-white">
+<header class="py-3 bg-primary">
     <div class="container">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold" href="#">Board Games Predictor</a>
+                <a class="navbar-brand fw-bold fs-3" href="{% url 'home' %}">Board Games Predictor</a>
                 <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navCollapse">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Home</a>
+                            <a class="nav-link fw-semibold fs-6 px-3 py-2" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold fs-6 px-3 py-2" href="{% url 'app:predict' %}">Predict Rating</a>
                         </li>
                     </ul>
                 </div>
@@ -32,18 +37,17 @@
 </header>
 
 <main class="container my-4 flex-grow-1">
-    <!-- Page content goes here -->
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
 </main>
 
 <footer class="bg-light text-center py-3 mt-auto">
     <div class="container">
-        <small>&copy; 2026 Board Games Predictor</small>
+        <small>&copy; 2026 Board Games Predictor. Built for Board Game Enthusiasts.</small>
     </div>
 </footer>
 
 <!-- Bootstrap JS bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>

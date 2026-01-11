@@ -2,164 +2,82 @@
 
 {% block title %}Board Games Rating Predictor{% endblock %}
 
-{% block extra_head %}
-<style>
-    :root{
-        --card-bg:#ffffff;
-        --muted:#6c757d;
-        --accent:#0d6efd;
-    }
-    body{
-        background:#f3f6f9;
-        font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    }
-    .predict-card{
-        max-width:980px;
-        margin:48px auto;
-        border-radius:14px;
-        overflow:hidden;
-        box-shadow:0 6px 30px rgba(20,30,50,0.07);
-    }
-    .predict-header{
-        background:linear-gradient(90deg,#fff 0%, #f8fbff 100%);
-        padding:26px 28px;
-        display:flex;
-        align-items:center;
-        gap:18px;
-    }
-    .brand-pill{
-        width:58px;
-        height:58px;
-        border-radius:10px;
-        background:linear-gradient(135deg,var(--accent),#6ea8fe);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color:#fff;
-        font-weight:700;
-        font-size:20px;
-    }
-    .predict-title{
-        margin:0;
-        font-size:1.25rem;
-        font-weight:700;
-        color:#0b2a4a;
-    }
-    .predict-sub{
-        margin:0;
-        font-size:0.9rem;
-        color:var(--muted);
-    }
-    .predict-body{
-        padding:22px;
-        background:var(--card-bg);
-    }
-    .form-label{
-        font-weight:600;
-        font-size:0.95rem;
-    }
-    .tags-help{
-        font-size:0.9rem;
-        color:var(--muted);
-    }
-    .result-box{
-        padding:14px;
-        border-radius:8px;
-        background:#f8fafb;
-        border:1px solid #e6eef8;
-    }
-    @media (max-width:575px){
-        .predict-header{ padding:18px; }
-        .predict-body{ padding:16px; }
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<main class="container">
+{% load static %}
+<div class="predict-page">
     <section class="predict-card">
-        <header class="predict-header">
-            <div class="brand-pill">BG</div>
-            <div>
-                <h1 class="predict-title">Board Games Rating Predictor</h1>
-                <p class="predict-sub">Enter game attributes to get an estimated rating</p>
-            </div>
-        </header>
-
         <div class="predict-body">
             <form id="predict-form" action="/predict" method="post" class="row g-3">
+                {% csrf_token %}
+
                 <div class="col-md-3">
-                    <label for="year_published" class="form-label">Year published</label>
-                    <input id="year_published" name="year_published" type="number" class="form-control" min="1800" max="2100" placeholder="e.g. 2018">
+                    <label class="form-label">Year published</label>
+                    <input name="year_published" type="number" class="form-control" placeholder="2018">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="min_players" class="form-label">Min players</label>
-                    <input id="min_players" name="min_players" type="number" class="form-control" min="1" placeholder="1">
+                    <label class="form-label">Min players</label>
+                    <input name="min_players" type="number" class="form-control" placeholder="1">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="max_players" class="form-label">Max players</label>
-                    <input id="max_players" name="max_players" type="number" class="form-control" min="1" placeholder="4">
+                    <label class="form-label">Max players</label>
+                    <input name="max_players" type="number" class="form-control" placeholder="4">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="play_time" class="form-label">Play time (mins)</label>
-                    <input id="play_time" name="play_time" type="number" class="form-control" min="1" placeholder="60">
+                    <label class="form-label">Play time (mins)</label>
+                    <input name="play_time" type="number" class="form-control" placeholder="60">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="min_age" class="form-label">Minimum age</label>
-                    <input id="min_age" name="min_age" type="number" class="form-control" min="0" placeholder="8">
+                    <label class="form-label">Minimum age</label>
+                    <input name="min_age" type="number" class="form-control" placeholder="8">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="complexity_avg" class="form-label">Complexity (avg)</label>
-                    <input id="complexity_avg" name="complexity_avg" type="number" step="0.1" class="form-control" min="0" max="5" placeholder="2.5">
+                    <label class="form-label">Complexity (avg)</label>
+                    <input name="complexity_avg" type="number" step="0.1" class="form-control" placeholder="2.5">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="owned_users" class="form-label">Owned users</label>
-                    <input id="owned_users" name="owned_users" type="number" class="form-control" min="0" placeholder="1200">
+                    <label class="form-label">Owned users</label>
+                    <input name="owned_users" type="number" class="form-control" placeholder="1200">
                 </div>
 
                 <div class="col-md-3">
-                    <label for="users_rated" class="form-label">Users rated</label>
-                    <input id="users_rated" name="users_rated" type="number" class="form-control" min="0" placeholder="850">
+                    <label class="form-label">Users rated</label>
+                    <input name="users_rated" type="number" class="form-control" placeholder="850">
                 </div>
 
                 <div class="col-12">
-                    <label for="mechanics" class="form-label">Mechanics</label>
-                    <input id="mechanics" name="mechanics" type="text" class="form-control" placeholder="Deck Building, Worker Placement">
-                    <div class="tags-help mt-1">Comma-separated (e.g. Deck Building, Area Control)</div>
+                    <label class="form-label">Mechanics</label>
+                    <input name="mechanics" type="text" class="form-control" placeholder="Deck Building, Worker Placement">
+                    <div class="tags-help mt-1">Comma-separated values</div>
                 </div>
 
                 <div class="col-12">
-                    <label for="domains" class="form-label">Domains / Categories</label>
-                    <input id="domains" name="domains" type="text" class="form-control" placeholder="Fantasy, Strategy">
-                    <div class="tags-help mt-1">Comma-separated (e.g. Fantasy, Economic)</div>
+                    <label class="form-label">Domains / Categories</label>
+                    <input name="domains" type="text" class="form-control" placeholder="Fantasy, Strategy">
+                    <div class="tags-help mt-1">Comma-separated values</div>
                 </div>
 
-                <div class="col-12 d-flex justify-content-between align-items-center">
-                    <div id="prediction-result" class="result-box" aria-live="polite">No prediction yet</div>
-                    <div>
-                        <button type="reset" class="btn btn-outline-secondary me-2">Reset</button>
-                        <button type="submit" class="btn btn-primary">Predict</button>
+                <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div id="prediction-result" class="result-box">
+                        No prediction yet
+                    </div>
+
+                    <div class="predict-actions">
+                        <button type="reset" class="btn btn-outline-secondary">
+                            Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Predict
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </section>
-</main>
-
-<script>
-    (function(){
-        const form = document.getElementById('predict-form');
-        const result = document.getElementById('prediction-result');
-
-        form.addEventListener('submit', function(e){
-            // normal form submit to /predict
-        });
-    })();
-</script>
+</div>
 {% endblock %}

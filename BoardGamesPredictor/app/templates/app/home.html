@@ -1,8 +1,37 @@
 {% extends "app/base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+{% load static %}
+<div class="hero-section">
     <h1>Board Games Predictor</h1>
-    <p class="lead">Predict game outcomes and explore statistics.</p>
+    <p class="hero-subtitle">
+        Predict board game ratings using machine learning. Enter game details to get accurate rating estimates.
+    </p>
+    <a href="{% url 'app:predict' %}" class="btn btn-primary-custom btn-lg">
+        Start Predicting
+    </a>
+</div>
+
+<div class="container-fluid px-lg-5 px-md-4 px-3">
+    <div class="row feature-grid g-4 justify-content-center">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="feature-card h-100">
+                <h3>ML Powered</h3>
+                <p>Machine learning model trained on 20,000+ real board games from BoardGameGeek.</p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="feature-card h-100">
+                <h3>Fast Analysis</h3>
+                <p>Get instant predictions based on mechanics, players, complexity, and more.</p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="feature-card h-100">
+                <h3>Real Data</h3>
+                <p>Built with actual player ratings and ownership stats for accurate results.</p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
