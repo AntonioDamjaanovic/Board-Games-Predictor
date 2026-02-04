@@ -118,21 +118,21 @@ footer {
 /* PREDICT PAGE STYLES */
 
 .predict-page {
-    background: #f3f6f9;
+    background: var(--bg-light)
 }
 
 .predict-card {
-    max-width: 980px;
+    max-width: 1000px;
     margin: 3rem auto;
-    border-radius: 14px;
-    overflow: hidden;
+    border-radius: 12px;
     background: var(--bg-card);
-    box-shadow: 0 6px 30px rgba(20, 30, 50, 0.07);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
     border: 1px solid var(--border);
+    overflow: hidden;
 }
 
 .predict-body {
-    padding-top: 1.25rem;
+    padding: 1.5rem;
 }
 
 .predict-body .form-label {
