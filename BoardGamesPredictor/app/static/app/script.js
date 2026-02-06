@@ -32,7 +32,7 @@ document.getElementById("predict-form").addEventListener("submit", async functio
     document.getElementById("prediction-result").innerText = "Predicting...";
 
     try {
-        const response = await fetch("https://your-api-url/predict", {
+        const response = await fetch("predict/api", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,10 +41,16 @@ document.getElementById("predict-form").addEventListener("submit", async functio
             body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        if (!response.ok) {
+            const text = await response.text();  // for debugging
+            console.error("Server error:", response.status, text);
+            document.getElementById("prediction-result").innerText =
+                "Prediction failed on server.";
+            return;
+        }
 
-        document.getElementById("prediction-result").innerText =
-            `Predicted rating: ${data.prediction}`;
+        const data = await response.json();
+        document.getElementById("prediction-result").innerText = `Predicted rating: ${data.prediction.toFixed(2)}`;
 
     } catch (error) {
         document.getElementById("prediction-result").innerText =

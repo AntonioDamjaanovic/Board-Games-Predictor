@@ -1,4 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+import json
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+AZURE_ENDPOINT = "https://ruap-projekt-predictor.polandcentral.inference.ml.azure.com/score"
+AZURE_API_KEY = "BJJkzVqzxnJ7Ss9edWweF5HhF7abOHAUK0rlTi2n94MG6gdmgcOtJQQJ99CBAAAAAAAAAAAAINFRAZMLN7ui"
+
 
 # Create your views here.
 def home(request):
@@ -48,3 +57,30 @@ def predict_view(request):
     }
 
     return render(request, "app/predict.html", context)
+
+@csrf_exempt
+def predict_api(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST allowed"}, status=405)
+
+    try:
+        payload = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {AZURE_API_KEY}",
+    }
+
+    response = requests.post(
+        AZURE_ENDPOINT,
+        headers=headers,
+        json=payload,
+        timeout=15,
+    )
+
+    result = response.json()
+    prediction = float(result[0])
+
+    return JsonResponse({"prediction": prediction})
