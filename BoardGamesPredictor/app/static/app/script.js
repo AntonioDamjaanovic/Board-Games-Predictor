@@ -32,7 +32,7 @@ document.getElementById("predict-form").addEventListener("submit", async functio
     document.getElementById("prediction-result").innerText = "Predicting...";
 
     try {
-        const response = await fetch("predict/api", {
+        const response = await fetch("/app/predict", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
