@@ -69,3 +69,6 @@ def predict_view(request):
     }
 
     return render(request, "app/predict.html", context)
+
+
+
